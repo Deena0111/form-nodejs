@@ -2,4 +2,6 @@
 .env
 #gitignore files
 .gitignore
+#node modules file
+node_modules/
 
