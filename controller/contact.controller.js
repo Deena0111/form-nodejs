@@ -25,22 +25,19 @@ function sendEmail(req, res, next){
     } else {
         models.contact.create(info)
             .then(result => {
-                res.json({
-                    statusCode: 201,
+                res.status(201).json({
                     message: "we will contact you",
                     info: result
                 })
             })
             .catch(error => {
-                res.json({
-                    statusCode: 500,
+                res.status(500).json({
                     message: "something went wrong",
                     error: error
                 })
             });
     }
 }
-
 module.exports={
     sendEmail:sendEmail
 }
