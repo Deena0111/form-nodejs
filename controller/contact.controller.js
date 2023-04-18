@@ -43,8 +43,37 @@ function sendEmail(req, res, next){
             });
     }
 }
+//create get all user data
+function getAllMail(req,res){
+    models.contact.findAll().then(result=>{
+        res.status(200).json(result)
+    })
+    .catch(err=>{
+        res.status(500).json({
+            message:"something went wrong"
+        })
+    })
+}
+//delete receivedmail
+function detelteMail(req,res){
+    models.contact.destroy({where:{id:req.params.id}}).then(result=>{
+        res.status(200).json({
+            message:"Received mail deleted",
+            contact:result
+        })
+    })
+    .catch(err=>{
+        res.status(500).json({
+            message:"something went wrong",
+            err:err
+        })
+    })
+}
+
 module.exports={
-    sendEmail:sendEmail
+    sendEmail:sendEmail,
+    getAllMail:getAllMail,
+    detelteMail:detelteMail
 }
 
 

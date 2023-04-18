@@ -1,7 +1,6 @@
 #enviromnent files
 .env
-#gitignore files
-.gitignore
-#node modules file
-node_modules/
+
+#nodemodules
+node_modules/*
 
