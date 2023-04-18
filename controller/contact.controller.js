@@ -1,5 +1,5 @@
 const models = require('../models')
-const Validator = require("fastest-validator");
+const Joi=require('joi')
 
 //create one api post details 
 function sendEmail(req, res, next){
@@ -9,15 +9,14 @@ function sendEmail(req, res, next){
         subject: req.body.subject,
         message: req.body.message
     }
-    const schema = {
-        name: { type: "string", optional: false, min: "2", max: "30"},
-        email: { type: "email", optional: false },
-        subject: { type: "string", optional: false, min: "10", max: "200" },
-        message: { type: "string", optional: false, min: "20", max: "500" }
-    }
-    const v = new Validator();
-    const validationResponse = v.validate(info, schema);
-    if (validationResponse !== true) {
+    const schema = Joi.object({
+        name:Joi.string().min(2).max(30).required(),
+        email:Joi.string().email({ minDomainSegments: 2, tlds: { allow: ['com', 'net'] } }),
+        subject:Joi.string().min(10).max(100).required(),
+        message:Joi.string().min(20).max(300).required()
+    })
+    validationResponse=schema.validate(info)
+    if (validationResponse.error) {
         return res.status(400).json({
             message: "Validation failed",
             errors: validationResponse
@@ -28,6 +27,12 @@ function sendEmail(req, res, next){
                 res.status(201).json({
                     message: "we will contact you",
                     info: result
+                })
+            })
+            .then(result=>{
+                models.email.create(email={
+                    name:info.name,
+                    email:info.email
                 })
             })
             .catch(error => {
