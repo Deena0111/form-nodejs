@@ -55,7 +55,7 @@ function getAllMail(req,res){
     })
 }
 //delete receivedmail
-function detelteMail(req,res){
+function deleteMail(req,res){
     models.contact.destroy({where:{id:req.params.id}}).then(result=>{
         res.status(200).json({
             message:"Received mail deleted",
@@ -73,7 +73,7 @@ function detelteMail(req,res){
 module.exports={
     sendEmail:sendEmail,
     getAllMail:getAllMail,
-    detelteMail:detelteMail
+    deleteMail:deleteMail
 }
 
 
